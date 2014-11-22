@@ -4,20 +4,33 @@ from xbee import ZigBee
 import urllib, urllib2
 import json
 
-def refresh(msg):
-    global w
-    #msg = xbee.wait_read_frame()
-    q = msg['rf_data']
-    w.configure(text=q)
-    
-    data = urllib.urlencode({ 'number': q })
-    req = urllib2.Request('http://104.131.161.219/post')
-    try:
-        urllib2.urlopen(req, data)
-    except IOError, e:
-        print e.reason
-    
-    #root.after(100, refresh)
+w
+
+data = ''
+
+def refresh(partial_data):
+    data = data + partial_data['rf_data']
+
+    data = data.split('\n')
+
+    buffer = ''
+
+    if not partial_data['rf_data'].endswith('\n'):
+        buffer = data[len(data) - 1]
+        data = data[0:(len(data) - 1)]
+
+    for msg in data:
+        w.configure(text=msg)
+
+        info = urllib.urlencode({ 'number': msg })
+        req = urllib2.Request('http://104.131.161.219/post')
+
+        try:
+            urllib2.urlopen(req, info)
+        except IOError, e:
+            print e.reason
+
+    data = buffer
 
 ser = serial.Serial('/dev/ttyACM0', 9600)
 xbee = ZigBee(ser, callback=refresh)
@@ -28,5 +41,4 @@ w = tk.Label(root, text="0", font=("Helvetica", 32))
 w.pack()
 w.place(relx=.5, rely=.5, anchor=tk.CENTER)
 
-#refresh()
 root.mainloop()
