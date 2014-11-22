@@ -9,6 +9,8 @@ global w
 data = ''
 
 def refresh(partial_data):
+    global data
+
     data = data + partial_data['rf_data']
 
     data = data.split('\n')
@@ -20,15 +22,17 @@ def refresh(partial_data):
         data = data[0:(len(data) - 1)]
 
     for msg in data:
+      print msg
+      if len(msg) > 0:
         w.configure(text=msg)
 
         info = urllib.urlencode({ 'number': msg })
         req = urllib2.Request('http://104.131.161.219/post')
 
         try:
-            urllib2.urlopen(req, info)
+          urllib2.urlopen(req, info)
         except IOError, e:
-            print e.reason
+          print e.reason
 
     data = buffer
 
