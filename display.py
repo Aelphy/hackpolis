@@ -4,7 +4,7 @@ from xbee import ZigBee
 import urllib, urllib2
 import json
 
-w
+global w
 
 data = ''
 
