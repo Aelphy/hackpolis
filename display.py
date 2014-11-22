@@ -35,7 +35,7 @@ def refresh(partial_data):
 
         try:
           urllib2.urlopen(req, info)
-          ncount = json.loads(msg)['Count']
+          ncount = json.loads(msg)['Length']
           if ncount > count:
             for i in range(count, ncount):
               addBuyer()
@@ -62,7 +62,7 @@ def initCanvas():
     reg = ImageTk.PhotoImage(Image.open(cash))
     label = tk.Label(root, image=reg)
     label.image = reg
-    label.place(y = 500, x = canvas_width)
+    label.place(y = 600, x = canvas_width)
     q = collections.deque()
     addButton = tk.Button(root, text ="Add", command=addBuyer)
     addButton.pack(side=tk.TOP)
