@@ -35,13 +35,12 @@ def moveItem(item, s, f):
 def addBuyer():
 	global n
 	global q
-	n = n + 1
 	item = canvas.create_image(0, height / 2, image=img)
 
-	k = (canvas_width - width * n) / 2
+	k = (canvas_width - (n + 1) * width - width / 2)
 	moveItem(item, 0, k)
 	q.append(item)
-	moveQueue()
+	n = n + 1
 
 def delBuyer():
 	global n
@@ -58,11 +57,8 @@ def moveQueue():
 	global n
 	global q
 	for i in range(n):
-		direction = 1
-		if i < n / 2:
-			direction = -1
-		x = (canvas_width + direction * i * width) / 2
-		moveItem(q[i], x, x + width / 2)
+		x = (canvas_width - i * width) / 2
+		moveItem(q[i], x, x + width)
 
 initCanvas()
 root.mainloop()
