@@ -12,8 +12,6 @@ def initCanvas():
 	global img, width, height
 	global canvas
 	global q
-	global n
-	n = 0
 	img = ImageTk.PhotoImage(Image.open(path))
 	width = img.width()
 	height = img.height()
@@ -28,35 +26,29 @@ def initCanvas():
 	delButton.pack()
 
 def moveItem(item, s, f):
-	for i in range(s, f):
-		canvas.move(item, 1, 0)
+	for i in range((f - s) / 5):
+		canvas.move(item, 5, 0)
 		canvas.update()
 
 def addBuyer():
-	global n
 	global q
 	item = canvas.create_image(0, height / 2, image=img)
-
-	k = (canvas_width - (n + 1) * width - width / 2)
-	moveItem(item, 0, k)
 	q.append(item)
-	n = n + 1
+	k = (canvas_width - len(q) * width - width / 2)
+	moveItem(item, 0, k)
 
 def delBuyer():
-	global n
 	global q
-	if n == 0:
+	if len(q) == 0:
 		return
 	moveQueue()
 	item = q.popleft()
-	x = (canvas_width + n * width) / 2
+	x = (canvas_width + len(q) * width) / 2
 	moveItem(item, x, canvas_width + width)
-	n = n - 1
 
 def moveQueue():
-	global n
 	global q
-	for i in range(n):
+	for i in range(len(q)):
 		x = (canvas_width - i * width) / 2
 		moveItem(q[i], x, x + width)
 
