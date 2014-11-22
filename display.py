@@ -15,6 +15,7 @@ average = 0
 
 def refresh(partial_data):
     global data
+    global count
 
     data = data + partial_data['rf_data']
     data = data.split('\n')
@@ -35,7 +36,8 @@ def refresh(partial_data):
 
         try:
           urllib2.urlopen(req, info)
-          ncount = json.loads(msg)['Length']
+          param = json.loads(msg)
+          ncount = param["Length"]
           if ncount > count:
             for i in range(count, ncount):
               addBuyer()
@@ -64,10 +66,6 @@ def initCanvas():
     label.image = reg
     label.place(y = 600, x = canvas_width)
     q = collections.deque()
-    addButton = tk.Button(root, text ="Add", command=addBuyer)
-    addButton.pack(side=tk.TOP)
-    delButton = tk.Button(root, text ="Del", command=delBuyer)
-    delButton.pack(side=tk.TOP)
 
 def moveItem(item, s, f):
     for i in range((f - s) / 10):
